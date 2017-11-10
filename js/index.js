@@ -9,7 +9,7 @@ var dispatchPage = function (params) {
         custPO: ko.observable(''),
         custNotes: ko.observable(''),
         custEmail: ko.observable(''),
-        reqeuestBy: ko.observable(''),
+        requestedBy: ko.observable(''),
         contOnSite: ko.observable(''),
         contPhone: ko.observable(''),
         contEmail: ko.observable(''),
@@ -17,7 +17,7 @@ var dispatchPage = function (params) {
         startDate: ko.observable(''),
         endDate: ko.observable(''),
         assignedTo: ko.observable('')
-    }
+    };
 
     self.buildingList = ko.observableArray();
 
@@ -27,7 +27,7 @@ var dispatchPage = function (params) {
             console.log(returnedData)
         })
 
-    },
+    };
 
     self.loadJson = function () {
 
@@ -38,7 +38,7 @@ var dispatchPage = function (params) {
                 dataType: "jsonp",
                 success: function(data) {
                     console.log(data);
-                    console.log(ko.mapping.fromJS(data))
+                    console.log(ko.mapping.fromJS(data));
                     var array = ko.mapping.fromJS(data);
                     self.buildingList(array);
                 },
@@ -65,6 +65,68 @@ var dispatchPage = function (params) {
 var materialsPage = function (params) {
 
 };
+
+var equipmentForm = function (params) {
+    self = this;
+    self.equipment = {
+        buildingSpace: ko.observable(''),
+        equipmentName: ko.observable(''),
+        equipmentMakeModel: ko.observable(''),
+        equipmentNum: ko.observable(''),
+        equipmentCost: ko.observable(''),
+        equipmentStatus: ko.observable(''),
+        equipmentDetails: ko.observable(''),
+        equipmentNotes: ko.observable(''),
+        equipmentImages: ko.observable('')
+    };
+
+    self.save = function () {
+
+        // $.post("http://127.0.0.1:3000/equipment/1", self.equipment, function(returnedData) {
+        //     console.log(returnedData)
+        // });
+
+        $.ajax(
+            {
+                type:'PUT',
+                url: 'http://127.0.0.1:3000/equipment/1',
+                data: ko.toJSON(self.equipment),
+                contentType: 'application/json',
+                success: function(data){
+                    console.log("updated success")
+                    self.equipment(data)
+                }
+            }
+        )
+
+    };
+
+};
+
+var equipmentPage = function (params) {
+
+    self = this;
+
+    self.equipList = ko.observableArray();
+
+    $( document ).ready(function() {
+        $.ajax({
+            type: 'GET',
+            url: 'http://127.0.0.1:3000/equipment',
+            contentType: "application/javascript",
+            dataType: "jsonp",
+            success: function (data) {
+                console.log(data);
+                self.equipList(data);
+            },
+            error: function (jq, st, error) {
+                alert(error);
+            }
+        });
+    });
+
+};
+
 var purchasePage = function (params) {
     self = this;
     self.suppliers = [
@@ -75,7 +137,62 @@ var purchasePage = function (params) {
     ];
 };
 
+var workDaysPage = function (params) {
+    self = this;
+    self.workDaysData = {
+        workDate: ko.observable(''),
+        technician: ko.observable(''),
+        reghrs: ko.observable(''),
+        overtime: ko.observable(''),
+        doubletime: ko.observable(''),
+        totalhrs: ko.observable(''),
+        rate: ko.observable(''),
+        labour: ko.observable('')
+    }
+
+    self.add = function () {
+
+        $.post("http://127.0.0.1:3000/workDays", self.workDaysData, function(returnedData) {
+            console.log(returnedData)
+        })
+
+    }
+}
+
+var viewWorkDaysPage = function (params) {
+
+    self = this;
+
+    self.workList = ko.observableArray();
+
+    $( document ).ready(function() {
+        $.ajax({
+            type: 'GET',
+            url: 'http://127.0.0.1:3000/workDays',
+            contentType: "application/javascript",
+            dataType: "jsonp",
+            success: function (data) {
+                console.log(data);
+                self.workList(data);
+            },
+            error: function (jq, st, error) {
+                alert(error);
+            }
+        });
+    });
+
+};
+
+var invoicePage = function (params) {
+
+};
+
+var hoursSummaryPage = function (params) {
+// testing time
+};
+
 this.custInfo = ko.observable('hello');
+
 var KnockoutController = function(config) {
     this.custInfo = ko.observable('hello');
     var defaults = {
@@ -148,12 +265,60 @@ var MyApp = function() {
                 routes: ["/materials"]
             },
             {
+                name: "Equipment",
+                componentConfig: {
+                    viewModel: equipmentPage,
+                    template: {element: "equipment-page"}
+                },
+                routes: ["/equipment"]
+            },
+            {
+                name: "EquipmentForm",
+                componentConfig: {
+                    viewModel: equipmentForm,
+                    template: {element: "equipment-form"}
+                },
+                routes: ["/equipmentForm"]
+            },
+            {
                 name: "Purchase",
                 componentConfig: {
                     viewModel: purchasePage,
                     template: {element: "purchase-page"}
                 },
                 routes: ["/purchase"]
+            },
+            {
+                name: "WorkDays",
+                componentConfig: {
+                    viewModel: workDaysPage,
+                    template: {element: "workDays-page"}
+                },
+                routes: ["/workDays"]
+            },
+            {
+                name: "ViewWorkDays",
+                componentConfig: {
+                    viewModel: viewWorkDaysPage,
+                    template: {element: "viewWorkDays-page"}
+                },
+                routes: ["/viewWorkDays"]
+            },
+				{
+                name: "Invoice",
+                componentConfig: {
+                    viewModel: invoicePage,
+                    template: {element: "invoice-page"}
+                },
+                routes: ["/invoice"]
+            },
+            {
+                name: "HoursSummary",
+                componentConfig: {
+                    viewModel: hoursSummaryPage,
+                    template: {element: "hoursSummary-page"}
+                },
+                routes: ["/hoursSummary"]
             }],
         defaultView: {
             name: "main",
