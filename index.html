@@ -48,7 +48,7 @@
         <li><a href="#/equipment">Equipment</a></li>
         <li><a href="#/materials">Materials & Tools</a></li>
         <li><a href="#/viewWorkDays">Work Days</a></li>
-        <li><a href="#/invoice">Invoice View</a></li>
+        <li><a href="#/data">Invoice View</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li><a>WO Number:</a></li>
@@ -76,32 +76,289 @@
 
       <div class="col-md-4 col-sm-6 col-xs-6">
         <div class="menu-thumb"></div>
-        <a href="#x" class="thumbnail purple" style="background-color: lightgreen;">Dispatch & Scheduling</a>
+        <a href="#/DispatchSummary" class="thumbnail purple" style="background-color: lightgreen;">Dispatch & Scheduling</a>
       </div>
       <div class="col-md-4 col-sm-6 col-xs-6">
         <div class="menu-thumb"></div>
-        <a href="#x" class="thumbnail purple" style="background-color: teal;">Equipment</a>
+        <a href="#/EquipmentSummary" class="thumbnail purple" style="background-color: teal;">Equipment</a>
       </div>
       <div class="col-md-4 col-sm-6 col-xs-6">
         <div class="menu-thumb"></div>
-        <a href="#x" class="thumbnail purple" style="background-color: plum;">Materials & Tools</a>
+        <a href="#/MaterialsSummary" class="thumbnail purple" style="background-color: plum;">Materials & Tools</a>
       </div>
       <div class="col-md-4 col-sm-6 col-xs-6">
         <div class="menu-thumb"></div>
-        <a href="#x" class="thumbnail purple" style="background-color: dodgerblue;">Work Days</a>
+        <a href="#/WorkSummary" class="thumbnail purple" style="background-color: dodgerblue;">Work Days</a>
       </div>
       <div class="col-md-4 col-sm-6 col-xs-6" >
         <div class="menu-thumb"></div>
-        <a href="#x" class="thumbnail purple" style="background-color: red;">Enter Hours</a>
+        <a href="#/workDays" class="thumbnail purple" style="background-color: red;">Enter Hours</a>
       </div>
       <div class="col-md-4 col-sm-6 col-xs-6">
         <div class="menu-thumb"></div>
-        <a href="#x" class="thumbnail purple" style="background-color: greenyellow;">Invoice View</a>
+        <a href="#/InvoiceSummary" class="thumbnail purple" style="background-color: greenyellow;">Invoice View</a>
       </div>
     </div>
   </div>
 
 
+</template>
+
+
+<template id="Dispatch-Summary">
+  <div class="container">
+    <div class="row">
+
+      <div class="col-md-4 col-sm-6 col-xs-6">
+        <div class="menu-thumb"></div>
+        <a href="#/" class="thumbnail purple" style="background-color: lightgreen; height: 625px; width: 450px; top: 50px">DISPATCH SUMMARY</a>
+
+        <label class="input-group" type="text" style="margin: 13px; top: -110px">Customer name: <span data-bind="text: dispatchData.custName"></span> </label>
+        <label class="input-group" type="text" style="margin: 13px; top: -110px">PO#: <span data-bind="text: dispatchData.custPO"></span> </label>
+        <label class="input-group" type="text" style="margin: 13px; top: -110px">Customer email: <span data-bind="text: dispatchData.custEmail"></span> </label>
+        <label class="input-group" type="text" style="margin: 13px; top: -110px">Customer notes: <span data-bind="text: dispatchData.custNotes"></span> </label>
+        <label class="input-group" type="text" style="margin: 13px; top: -110px">Request by: <span data-bind="text: dispatchData.requestBy"></span> </label>
+        <label class="input-group" type="text" style="margin: 13px; top: -110px">Contact on site: <span data-bind="text: dispatchData.contOnSite"></span> </label>
+        <label class="input-group" type="text" style="margin: 13px; top: -110px">Phone: <span data-bind="text: dispatchData.contPhone"></span> </label>
+        <label class="input-group" type="text" style="margin: 13px; top: -110px">Contact email: <span data-bind="text: dispatchData.contEmail"></span> </label>
+        <label class="input-group" type="text" style="margin: 13px; top: -110px">Work date: <span data-bind="text: dispatchData.workDate"></span> </label>
+        <label class="input-group" type="text" style="margin: 13px; top: -110px">Start date: <span data-bind="text: dispatchData.startDate"></span> </label>
+        <label class="input-group" type="text" style="margin: 13px; top: -110px">End date: <span data-bind="text: dispatchData.endDate"></span> </label>
+        <label class="input-group" type="text" style="margin: 13px; top: -110px">Assign To: <span data-bind="text: dispatchData.assignedTo"></span> </label>
+      </div>
+
+
+
+    </div>
+  </div>
+</template>
+
+<template id="Equipment-Summary">
+  <div class="container">
+    <div class="row">
+
+      <div class="col-md-4 col-sm-6 col-xs-6">
+        <div class="menu-thumb"></div>
+        <a href="#/" class="thumbnail purple" style="background-color: teal;">EQUIPMENT SUMMARY</a>
+
+      </div>
+
+      <div id="customers1">
+        <table id="truck_info1" class="table table-striped">
+          <colgroup>
+            <col width="15%">
+            <col width="15%">
+            <col width="15%">
+            <col width="15%">
+            <col width="15%">
+            <col width="25%">
+          </colgroup>
+          <thead>
+          <tr class='warning'>
+            <th>Building Space</th>
+            <th>Name</th>
+            <th>Model</th>
+            <th>Number</th>
+            <th>Cost</th>
+            <th>Status</th>
+            <th>Details</th>
+            <th>Notes</th>
+            <th>Images</th>
+          </tr>
+          </thead>
+          <tbody data-bind="foreach: equipList">
+          <tr>
+            <td><span data-bind="text: buildingSpace"></span></td>
+            <td><span data-bind="text: equipmentName"></span></td>
+            <td><span data-bind="text: equipmentMakeModel"></span></td>
+            <td><span data-bind="text: equipmentNum"></span></td>
+            <td><span data-bind="text: equipmentCost"></span></td>
+            <td><span data-bind="text: equipmentStatus"></span></td>
+            <td><span data-bind="text: equipmentDetails"></span></td>
+            <td><span data-bind="text: equipmentNotes"></span></td>
+            <td><span data-bind="text: equipmentImages"></span></td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </div>
+</template>
+
+<template id="Materials-Summary">
+  <div class="container">
+    <div class="row">
+
+      <div class="col-md-4 col-sm-6 col-xs-6">
+        <div class="menu-thumb"></div>
+        <a href="#/" class="thumbnail purple" style="background-color: plum;">MATERIALS SUMMARY</a>
+      </div>
+
+      <div id="customers2">
+        <table id="truck_info2" class="table table-striped">
+          <colgroup>
+            <col width="15%">
+            <col width="15%">
+            <col width="15%">
+            <col width="15%">
+            <col width="15%">
+            <col width="25%">
+          </colgroup>
+          <thead>
+          <tr class='warning'>
+            <th>Truck quantity</th>
+            <th>Truck cost</th>
+            <th>Truck description</th>
+          </tr>
+          </thead>
+          <tbody data-bind="foreach: truckList">
+          <tr>
+            <td><span data-bind="text: truckQty"></span></td>
+            <td><span data-bind="text: truckCost"></span></td>
+            <td><span data-bind="text: truckDesc"></span></td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div id="customers3">
+        <table id="tool_info" class="table table-striped">
+          <colgroup>
+            <col width="15%">
+            <col width="15%">
+            <col width="15%">
+            <col width="15%">
+            <col width="15%">
+            <col width="25%">
+          </colgroup>
+          <thead>
+          <tr class='warning'>
+            <th>Tool quantity</th>
+            <th>Tool rate</th>
+            <th>Tool description</th>
+          </tr>
+          </thead>
+          <tbody data-bind="foreach: toolList">
+          <tr>
+            <td><span data-bind="text: toolQty"></span></td>
+            <td><span data-bind="text: toolRate"></span></td>
+            <td><span data-bind="text: toolDesc"></span></td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+
+
+
+      <div id="customers4">
+        <table id="third_party" class="table table-striped">
+          <colgroup>
+            <col width="15%">
+            <col width="15%">
+            <col width="15%">
+            <col width="15%">
+            <col width="15%">
+            <col width="25%">
+          </colgroup>
+          <thead>
+          <tr class='warning'>
+            <th>Third Party date</th>
+            <th>Third Party cost</th>
+            <th>Third Party description</th>
+          </tr>
+          </thead>
+          <tbody data-bind="foreach: thirdPartyList">
+          <tr>
+            <td><span data-bind="text: thirdPartyDate"></span></td>
+            <td><span data-bind="text: thirdPartyCost"></span></td>
+            <td><span data-bind="text: thirdPartyDesc"></span></td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+
+
+    </div>
+  </div>
+</template>
+
+<template id="Work-Summary">
+  <div class="container">
+    <div class="row">
+
+      <div class="col-md-4 col-sm-6 col-xs-6">
+        <div class="menu-thumb"></div>
+
+        <a href="#/" class="thumbnail purple" style="background-color: dodgerblue;">WORK SUMMARY</a>
+
+      </div>
+
+      <div id="customers">
+        <table id="truck_info" class="table table-striped">
+          <colgroup>
+            <col width="15%">
+            <col width="15%">
+            <col width="15%">
+            <col width="15%">
+            <col width="15%">
+            <col width="25%">
+          </colgroup>
+          <thead>
+          <tr class='warning'>
+            <th>DATE</th>
+            <th>TECHNICIAN</th>
+            <th>REGULAR HOURS</th>
+            <th>OVERTIME</th>
+            <th>DOUBLE TIME</th>
+            <th>TOTAL HOURS</th>
+            <th>RATE</th>
+            <th>LABOUR</th>
+          </tr>
+          </thead>
+          <tbody data-bind="foreach: workList">
+          <tr>
+            <td><span data-bind="text: workDate"></span></td>
+            <td><span data-bind="text: technician"></span></td>
+            <td><span data-bind="text: regHrs"></span></td>
+            <td><span data-bind="text: overTime"></span></td>
+            <td><span data-bind="text: doubleTime"></span></td>
+            <td><span data-bind="text: totalHrs"></span></td>
+            <td><span data-bind="text: rate"></span></td>
+            <td><span data-bind="text: labour"></span></td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+
+
+    </div>
+</template>
+
+<template id="Enter-Summary">
+  <div class="container">
+    <div class="row">
+
+      <div class="col-md-4 col-sm-6 col-xs-6">
+        <div class="menu-thumb"></div>
+        <a href="#x" class="thumbnail purple" style="background-color: red; height: 400px; width: 450px;">HOURS SUMMARY</a>
+      </div>
+    </div>
+  </div>
+</template>
+
+<template id="Invoice-Summary">
+  <div class="container">
+    <div class="row">
+
+      <div class="col-md-4 col-sm-6 col-xs-6">
+        <div class="menu-thumb"></div>
+        <a href="#/" class="thumbnail purple" style="background-color: greenyellow; height: 400px; width: 450px;">INVOICE SUMMARY</a>
+      </div>
+
+
+    </div>
+  </div>
 </template>
 
 
@@ -245,7 +502,11 @@
           </li>
         </ul>
       </div>
-      <div class="col-lg-4"></div>
+      <ul class="accordion-menu col-sm-12 col-lg-4">
+        <li class="closed">
+          <header data-bind="click: dispatchData.submit"><span class="title">Submit</span></header>
+        </li>
+      </ul>
     </div>
     <div class="row">
       <div class="container">
@@ -550,7 +811,7 @@
       </div>
       <ul class="accordion-menu col-sm-12 col-lg-4">
         <li class="closed">
-          <header data-bind="click: $component.addTruck" onclick="location.href='#/trucks'"><span class="title">Submit</span></header>
+          <header data-bind="click: $component.addTruck" onclick="location.href='#/trucks'" id="truckAddButton"><span class="title">Submit</span></header>
         </li>
         <li class="closed">
           <header onclick="location.href='#/trucks'"><span class="title">Cancel</span></header>
@@ -850,14 +1111,13 @@
           <div class="form-group" data-bind="click: $component.getIndex($index())">
             <label>Equipment Name:</label>
             <select class="form-control" data-bind="options: equipmentOptions, optionsText: 'name', optionsValue: 'item', value: equipLoad"></select>
-            <button type="button" class="btn btn-secondary  btn-info" data-bind="click: $component.confirm"><span class="glyphicon glyphicon-ok"></span></button>
+            <h3><strong>Category: HVAC</strong> <button type="button" class="btn btn-secondary  btn-info" data-bind="click: $component.confirm"><span class="glyphicon glyphicon-ok"></span></button></h3>
           </div>
         </div>
           <blockquote class="card-blockquote">
-            <table class="table">
+            <table>
               <thead>
               <tr>
-                <th>Category:</th>
                 <th>Make/Model:</th>
                 <th>Serial#:</th>
                 <th>Remove:</th>
@@ -865,7 +1125,6 @@
               </thead>
               <tbody>
               <tr>
-                <td>HVAC</td>
                 <td data-bind="text: equipmentMakeModel, click: $component.edit($index())" onclick="location.href='#/equipmentFormEdit'"></td>
                 <td data-bind="text: equipmentNum, click: $component.edit($index())" onclick="location.href='#/equipmentFormEdit'"></td>
                 <td>
@@ -1586,7 +1845,13 @@
 
 </template>
 
-
+<template id="data">
+  <strong data-bind="html: $component.format"></strong>
+  <br/>
+  <div data-bind="foreach: supplierList">
+    <strong data-bind="text: supplierName"></strong>
+  </div>
+</template>
 
 <script src="js/index.js"></script>
 

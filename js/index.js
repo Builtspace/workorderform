@@ -69,32 +69,42 @@ var dispatchData = {
              message: 'Please enter letters only!',
              params: '^[a-zA-Z].*'
             }
-        })
+        }),
+    submit: function() {
+        if (dispatchData.errors().length === 0) {
+            alert('Thank you.');
+        }
+        else {
+            alert('Please check your submission.');
+            dispatchData.errors.showAllMessages();
+        }
+    }
 };
+
 
 var supplierData = {
     supplierName: ko.observable(''),
     unitList: ko.observableArray([])
 };
 var units = {
-    unitQty: ko.observable(''),
+    unitQty: ko.observable('').extend({required: true}).extend({number: true}),
     unitCost: ko.observable(''),
-    unitDesc: ko.observable('')
+    unitDesc: ko.observable('').extend({required: true})
 };
 var trucks = {
-    truckQty: ko.observable(''),
+    truckQty: ko.observable('').extend({required: true}).extend({number: true}),
     truckCost: ko.observable(''),
-    truckDesc: ko.observable('')
+    truckDesc: ko.observable('').extend({required: true})
 };
 var tools = {
-    toolQty: ko.observable(''),
+    toolQty: ko.observable('').extend({required: true}).extend({number: true}),
     toolRate: ko.observable(''),
-    toolDesc: ko.observable('')
+    toolDesc: ko.observable('').extend({required: true})
 };
 var thirdParty = {
     thirdPartyDate: ko.observable(''),
     thirdPartyCost: ko.observable(''),
-    thirdPartyDesc: ko.observable('')
+    thirdPartyDesc: ko.observable('').extend({required: true})
 };
 var quotedWork = {
     quotedCost: ko.observable('')
@@ -135,11 +145,31 @@ var workDaysData = {
         .extend({required: true})
         .extend({number: true}),
     totalHrs: ko.observable(''),
+    //     ko.computed(function () {
+    //     var total = parseInt(workDaysData.regHrs) + parseInt(workDaysData.overTime) + parseInt(workDaysData.doubleTime);
+    //     return total;
+    // }),
     rate: ko.observable('')
         .extend({required: true})
         .extend({number: true}),
     labour: ko.observable('')
+    //     ko.computed(function () {
+    //     var regPay = parseInt(workDaysData.regHrs) * parseInt(workDaysData.rate);
+    //     var overPay = parseInt(workDaysData.overTime) * (parseInt(workDaysData.rate) * 1.5);
+    //     var doublePay = parseInt(workDaysData.doublePay) * (parseInt(workDaysData.rate) * 2);
+    //     var total = regPay + overPay + doublePay;
+    //
+    //     return total
+    // })
 };
+
+dispatchData.errors = ko.validation.group(dispatchData);
+units.errors = ko.validation.group(units);
+trucks.errors = ko.validation.group(trucks);
+tools.errors = ko.validation.group(tools);
+thirdParty.errors = ko.validation.group(thirdParty);
+quotedWork.errors = ko.validation.group(quotedWork);
+workDaysData.errors = ko.validation.group(workDaysData);
 
 var supplierNameData = [
     {supplierName: "Trane"},
@@ -314,9 +344,7 @@ var dispatchPage = function (params) {
 
 };
 
-var dispatchEditPage = function (params) {
-    console.log(dispatchData.workDate);
-};
+
 
 
 var equipmentForm = function (params) {
@@ -691,7 +719,50 @@ var viewWorkDaysPage = function (params) {
 var invoicePage = function (params) {
 
 };
+var dataPage = function (params) {
+    self = this;
+    self.suppliers;
+    self.format = ko.observable(
+        'custName: ' + dispatchData.custName() +
+        '<br /> custPO: ' + dispatchData.custPO() +
+        '<br /> contOnSite: ' + dispatchData.contOnSite() +
+        '<br /> contPhone: ' + dispatchData.contPhone() +
+        '<br /> contEmail: ' + dispatchData.contEmail() +
+        '<br /> workDate: ' + dispatchData.workDate() +
+        '<br /> startDate: ' + dispatchData.startDate() +
+        '<br /> endDate: ' + dispatchData.endDate() +
+        '<br /> assignedTo: ' + dispatchData.assignedTo());
 
+    // toolList
+    // thirdPartyList
+    // equipList
+    // workList
+    // equipmentNameList
+};
+var DispatchSummary = function(params) {
+
+};
+
+var EquipmentSummary = function(params) {
+
+
+};
+
+var MaterialsSummary = function(params) {
+
+};
+
+var WorkSummary = function(params) {
+
+};
+
+var EnterSummary = function(params) {
+
+};
+
+var InvoiceSummary = function(params) {
+
+}
 var KnockoutController = function(config) {
     var defaults = {
             transitionDelayMs: 0,
@@ -953,6 +1024,62 @@ var MyApp = function() {
                     template: {element: "invoice-page"}
                 },
                 routes: ["/invoice"]
+            },
+            {
+                name: "Data",
+                componentConfig: {
+                    viewModel: dataPage,
+                    template: {element: "data"}
+                },
+                routes: ["/data"]
+            },
+            {
+                name: "DispatchSummary",
+                componentConfig: {
+                    viewModel:  DispatchSummary,
+                    template: {element: "Dispatch-Summary"}
+                },
+                routes: ["/DispatchSummary"]
+            },
+            {
+                name: "EquipmentSummary",
+                componentConfig: {
+                    viewModel:  EquipmentSummary,
+                    template: {element: "Equipment-Summary"}
+                },
+                routes: ["/EquipmentSummary"]
+            },
+            {
+                name: "MaterialsSummary",
+                componentConfig: {
+                    viewModel:  MaterialsSummary,
+                    template: {element: "Materials-Summary"}
+                },
+                routes: ["/MaterialsSummary"]
+            },
+            {
+                name: "WorkSummary",
+                componentConfig: {
+                    viewModel:  WorkSummary,
+                    template: {element: "Work-Summary"}
+                },
+                routes: ["/WorkSummary"]
+            },
+            {
+                name: "EnterSummary",
+                componentConfig: {
+                    viewModel:  EnterSummary,
+                    template: {element: "Enter-Summary"}
+                },
+                routes: ["/EnterSummary"]
+            },
+            {
+                name: "InvoiceSummary",
+                componentConfig: {
+                    viewModel:  InvoiceSummary,
+                    template: {element: "Invoice-Summary"}
+                },
+                routes: ["/InvoiceSummary"]
             }],
         defaultView: {
             name: "main",
